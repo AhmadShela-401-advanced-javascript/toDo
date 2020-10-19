@@ -5,7 +5,8 @@ import TodoList from './list.js';
 
 import './todo.scss';
 
-const todoAPI = 'https://api-js401.herokuapp.com/api/v1/todo';
+const todoAPI = 'http://localhost:4000/api/v1/todoItem';
+// const todoAPI = 'https://api-js401.herokuapp.com/api/v1/todo';
 
 
 const ToDo = () => {
@@ -18,7 +19,7 @@ const ToDo = () => {
       method: 'post',
       mode: 'cors',
       cache: 'no-cache',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'authorization': 'application/json' },
       body: JSON.stringify(item)
     })
       .then(response => response.json())
