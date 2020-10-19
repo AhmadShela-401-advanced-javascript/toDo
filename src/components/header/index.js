@@ -1,7 +1,7 @@
 import React from 'react';
-import {  Navbar } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 
-function Header() {
+function Header(props) {
     return (
         <>
             <Navbar bg="dark" variant="dark">
@@ -15,6 +15,9 @@ function Header() {
                     />{' '}
       React Bootstrap
     </Navbar.Brand>
+    <div>
+        {props.signForm}
+    </div>
             </Navbar>
         </>
     )
