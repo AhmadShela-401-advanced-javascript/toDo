@@ -72,7 +72,7 @@ function SignUp(props) {
             <Form.Control
             id='name'
               name="text"
-              placeholder="Add To Do List Item"
+              placeholder="Ahmad"
             />
           {/* </Form.Label> */}
           {/* <Form.Label>
@@ -80,7 +80,7 @@ function SignUp(props) {
             <Form.Control
             id='pass'
               name="pass"
-              placeholder="Add To Do List Item"
+              placeholder="123"
             />
           {/* </Form.Label> */}
           <If condition={state == 1}>

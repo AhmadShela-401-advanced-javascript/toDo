@@ -25,9 +25,9 @@ function App(props) {
   const [handleBasicAuth, handleBearerAuth, values] = useAuth(toggLogingState);
 
 
-  useEffect(() => {    
-    handleBearerAuth()
-  },[]);
+  // useEffect(() => {    
+  //   handleBearerAuth()
+  // },[]);
 
   return (
     <BrowserRouter>
