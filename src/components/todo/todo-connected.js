@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import TodoForm from './form.js';
 import TodoList from './list.js';
+import useAjax from '../../hooks/useAjax';
 
 
 import './todo.scss';
 
-const todoAPI = 'http://localhost:4000/api/v1/todoItem';
+const todoAPI = 'https://todoapi-ahmad.herokuapp.com/api/v1/todoItem';
 // const todoAPI = 'https://api-js401.herokuapp.com/api/v1/todo';
 
 
@@ -13,18 +14,28 @@ const ToDo = () => {
 
   const [list, setList] = useState([]);
 
+  const [axiosApiInstance] = useAjax();
+
   const _addItem = (item) => {
     item.due = new Date();
-    fetch(todoAPI, {
-      method: 'post',
-      mode: 'cors',
-      cache: 'no-cache',
-      headers: { 'authorization': 'application/json' },
-      body: JSON.stringify(item)
-    })
-      .then(response => response.json())
-      .then(savedItem => {
+    item.complete = false;
+    axiosApiInstance(
+      todoAPI,
+      'post',
+      item
+    ).then(({ data: savedItem }) => {
         setList([...list, savedItem])
+      })
+      .catch(console.error);
+  };
+
+  const _getTodoItems = () => {
+    axiosApiInstance(
+      todoAPI,
+      'get'
+    ).then(( data ) => {
+      console.log('the database data = > ',data.data.results);
+        setList(data.data.results)
       })
       .catch(console.error);
   };
@@ -38,30 +49,15 @@ const ToDo = () => {
       item.complete = !item.complete;
 
       let url = `${todoAPI}/${id}`;
-
-      fetch(url, {
-        method: 'put',
-        mode: 'cors',
-        cache: 'no-cache',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(item)
-      })
-        .then(response => response.json())
-        .then(savedItem => {
-          setList(list.map(listItem => listItem._id === item._id ? savedItem : listItem));
+      axiosApiInstance(
+        url,
+        'put',
+        item
+      ).then(() => {
+        setList(list.map(listItem => listItem._id === item._id ? item : listItem));
         })
         .catch(console.error);
     }
-  };
-
-  const _getTodoItems = () => {
-    fetch(todoAPI, {
-      method: 'get',
-      mode: 'cors',
-    })
-      .then(data => data.json())
-      .then(data => setList(data.results))
-      .catch(console.error);
   };
 
   useEffect(_getTodoItems, []);
