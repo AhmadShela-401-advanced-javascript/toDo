@@ -7,17 +7,19 @@ import ToDo from './components/todo/todo-connected';
 import Header from './components/header';
 import useAuth from './auth/auth'
 import { Button } from 'react-bootstrap';
+import SiteContext from './context/site';
+import CotrolePanel from './components/controlePanel'
 
 function App(props) {
   // const toggLogingState = (loginStat) => {
   //   return loginStat == 0 ? 1 : 0
   // }
-  const [loginState, setLoginState] = useState(0);
+  const [loginState, setLoginState] = useState(1);
 
   const toggLogingState = () => {
-    if(loginState == 0){
+    if (loginState == 0) {
       setLoginState(1)
-    }else{
+    } else {
       setLoginState(0)
     }
     // this.setState({signIn : this.state.signIn == 0 ? 1 : 0})
@@ -31,24 +33,27 @@ function App(props) {
 
   return (
     <BrowserRouter>
-      <Header signForm={
-        <If condition={loginState == 0}>
+      <SiteContext>
+        <Header signForm={
+          <If condition={loginState == 0}>
+            <Then>
+              <SignUp changeSignStatus={toggLogingState} />
+            </Then>
+            <Else>
+              <Button onClick={toggLogingState}>LogOut</Button>
+            </Else>
+          </If>
+        } />
+        <If condition={loginState == 1}>
           <Then>
-          <SignUp changeSignStatus={toggLogingState} />
+            <CotrolePanel/>
+            <ToDo />
           </Then>
           <Else>
-            <Button onClick={toggLogingState}>LogOut</Button>
+
           </Else>
         </If>
-      } />
-      <If condition={loginState == 1}>
-        <Then>
-          <ToDo />
-        </Then>
-        <Else>
-
-        </Else>
-      </If>
+      </SiteContext>
     </BrowserRouter>
   );
 }
