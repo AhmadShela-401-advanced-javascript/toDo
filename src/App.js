@@ -14,7 +14,7 @@ function App(props) {
   // const toggLogingState = (loginStat) => {
   //   return loginStat == 0 ? 1 : 0
   // }
-  const [loginState, setLoginState] = useState(1);
+  const [loginState, setLoginState] = useState(0);
 
   const toggLogingState = () => {
     if (loginState == 0) {
