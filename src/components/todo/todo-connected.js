@@ -60,6 +60,21 @@ const ToDo = () => {
     }
   };
 
+  const _deleteItem = id => {
+
+    let item = list.filter(i => i._id === id)[0] || {};
+
+    if (item._id) {
+      let url = `${todoAPI}/${id}`;
+
+      axiosApiInstance(url, "delete")
+        .then(() => {
+          setList(list.filter(listItem => listItem._id !== item._id));
+        })
+        .catch(console.error);
+    }
+  };
+
   useEffect(_getTodoItems, []);
 
   return (
@@ -80,6 +95,7 @@ const ToDo = () => {
           <TodoList
             list={list}
             handleComplete={_toggleComplete}
+            handleDelete={_deleteItem}
           />
         </div>
       </section>
