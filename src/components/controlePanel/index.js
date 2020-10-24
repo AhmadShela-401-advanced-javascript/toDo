@@ -35,7 +35,7 @@ function CotrolePanel(props) {
                     <option value="15">15</option>                    
                 </select>
                 <select onChange={toggleSortChangeValue} className="dropdownmenu" id="dropdownmenu" name="dropdownmenu">
-                    <option value="name">name</option>
+                    <option value="text">text</option>
                     <option value="assignee">assignee</option>
                     <option value="deficulty">deficulty</option>                    
                 </select>

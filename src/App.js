@@ -19,11 +19,11 @@ static contextType = LoginContext;
     return (
       <SiteContext>
       <LoginContext>
+        
         <Login />
         <hr />
-        {/* <EditLink /> */}
-        {/* <DeleteLink /> */}
         <Auth condition={this.context.loggedIn}>
+        <CotrolePanel/>
         <ToDo/>
         </Auth>
       </LoginContext>

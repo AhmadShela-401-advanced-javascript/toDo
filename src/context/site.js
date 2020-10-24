@@ -7,7 +7,7 @@ function SiteProvider(props) {
     // as a state : title, twitter
     const [displayCompletedItems, setdisplayCompletedItems] = useState(false);
     const [numItemsPerScreen, setnumItemsPerScreen] = useState(5);
-    const [defualtSortField, setdefualtSortField] = useState('name');
+    const [defualtSortField, setdefualtSortField] = useState('text');
 
     const state = {
         displayCompletedItems, 

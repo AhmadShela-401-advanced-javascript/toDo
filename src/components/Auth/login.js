@@ -10,7 +10,7 @@ class Login extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { username: '', password: '' };
+    this.state = { username: '', password: '',signState:'in' };
   }
 
   handleChange = e => {
@@ -21,15 +21,33 @@ class Login extends React.Component {
     e.preventDefault();
     this.context.login(this.state.username, this.state.password);
   };
+  handleSubmitSignUp = e => {
+    e.preventDefault();
+    this.context.logUp(this.state.username, this.state.password);
+  };
+  toggleSignState = e =>{
+    if(this.state.signState == 'up'){
+      this.setState({signState:'in'})
+    }else{
+      this.setState({signState:'up'})
+    }
+  }
+
+  handleSubmitLogOut = e => {
+    e.preventDefault();
+    this.context.logout()
+    this.setState({signState:'in'});
+  };
 
   render() {
+
     return (
       <>
         <If condition={this.context.loggedIn}>
-          <button onClick={this.context.logout}>Log Out</button>
+          <button onClick={this.handleSubmitLogOut}>Log Out</button>
         </If>
 
-        <If condition={!this.context.loggedIn}>
+        <If condition={!this.context.loggedIn && this.state.signState == 'in'}>
           <form onSubmit={this.handleSubmit}>
             <input
               placeholder="UserName"
@@ -43,9 +61,50 @@ class Login extends React.Component {
             />
             <button>Login</button>
           </form>
+            <button onClick={this.toggleSignState}>LogUp</button>
+        </If>
+        <If condition={!this.context.loggedIn && this.state.signState == 'up'}>
+          <form onSubmit={this.handleSubmitSignUp}>
+            <input
+              placeholder="UserName"
+              name="username"
+              onChange={this.handleChange}
+            />
+            <input
+              placeholder="password"
+              name="password"
+              onChange={this.handleChange}
+            />
+            <button>Register</button>
+          </form>
+            <button onClick={this.toggleSignState}>signIn</button>
         </If>
       </>
     );
+
+    // return (
+    //   <>
+    //     <If condition={this.context.loggedIn}>
+    //       <button onClick={this.context.logout}>Log Out</button>
+    //     </If>
+
+    //     <If condition={!this.context.loggedIn}>
+    //       <form onSubmit={this.handleSubmit}>
+    //         <input
+    //           placeholder="UserName"
+    //           name="username"
+    //           onChange={this.handleChange}
+    //         />
+    //         <input
+    //           placeholder="password"
+    //           name="password"
+    //           onChange={this.handleChange}
+    //         />
+    //         <button>Login</button>
+    //       </form>
+    //     </If>
+    //   </>
+    // );
   }
 }
 

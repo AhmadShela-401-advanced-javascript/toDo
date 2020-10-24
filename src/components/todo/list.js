@@ -7,9 +7,36 @@ function TodoList(props) {
 
   const siteContext = useContext(SiteContext);
 
+  function sortBy(arr, sortField, type) {
+
+    if (type == 'string') {
+
+      arr.sort((a, b) => {
+        // console.log(a[sortField])
+        let fa = a[sortField].toLowerCase(),
+          fb = b[sortField].toLowerCase();
+
+        if (fa < fb) {
+          return -1;
+        }
+        if (fa > fb) {
+          return 1;
+        }
+        return 0;
+      });
+
+    } else {
+      arr.sort((a, b) => {
+        return a[sortField] - b[sortField];
+      });
+    }
+
+  }
+
   function _filterFn(list) {
 
     let myArr = [];
+    sortBy(list,'',siteContext.defualtSortField);
     list.forEach(item => {
       if (siteContext.displayCompletedItems) { // return all items
         myArr.push(item);
@@ -22,7 +49,6 @@ function TodoList(props) {
 
     return myArr
   }
-
 
   return (
     <PaginatedList
