@@ -1,8 +1,10 @@
 import React from 'react';
 import cookie from 'react-cookies';
+import Cookies from 'react-cookie'
 import base64 from 'base-64';
 import jwt from 'jsonwebtoken';
 import {config} from 'dotenv';
+import axios from "axios";
 const API = process.env.REACT_APP_API || 'https://todoapi-ahmad.herokuapp.com/api/v1/user';
 // const API = process.env.REACT_APP_API;
 
@@ -21,10 +23,20 @@ class LoginProvider extends React.Component {
       loggedIn: false,
       login: this.login,
       logout: this.logout,
+      logUp: this.logUp,
       user: {},
     };
   }
-
+  axiosApiInstance = (url, method, body) => {
+    return axios({
+      url: url,
+      method: method,
+      mode: 'cors',
+      cache: 'no-cache',
+      headers: { 'Content-Type': 'application/json' },
+      data: body
+    })
+  }
   login = (username, password) => {
     // This is foul and unsafe ... but when working offline / testmode ess oh kay
     console.log(testLogins[username]);
@@ -49,6 +61,20 @@ class LoginProvider extends React.Component {
     }
   }
 
+  logUp = (username, password) => {
+    console.log('Starting logging up .... ');
+    // This is foul and unsafe ... but when working offline / testmode ess oh kay
+    if (testLogins[username]) {
+      this.validateToken(testLogins[username]);
+    }
+    else {
+      let body = {name: username, pass: password, role: "ADMIN"}
+        this.axiosApiInstance(`${API}/signup`,'post',body)
+        .then(response => this.validateToken(response.data))
+        .catch(console.error);
+    }
+  }
+
   validateToken = token => {
     try {
       console.log('Token',process.env.REACT_APP_SECRET);
@@ -63,12 +89,20 @@ class LoginProvider extends React.Component {
 
   };
 
+  componentDidMount() {
+    // get the cookie -> validate cookie -> of valid -> update the state 
+    const cookieToken = cookie.load('auth');
+    console.log('--->componentDidMount',cookieToken);
+    const token = cookieToken || null;
+    this.validateToken(token);
+  }
+
   logout = () => {
     this.setLoginState(false, null, {});
   };
 
   setLoginState = (loggedIn, token, user) => {
-    cookie.save('auth', token);
+    cookie.save('auth', token,{ maxAge: 86400 });
     this.setState({ token, loggedIn, user });
   };
 

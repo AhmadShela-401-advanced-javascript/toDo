@@ -38,6 +38,10 @@
                 * Status (complete/incomplete)
                 * Difficulty (number between 1 and 5)
 
+### UML :
+
+![](.//assets/hooksUML.jpg)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
